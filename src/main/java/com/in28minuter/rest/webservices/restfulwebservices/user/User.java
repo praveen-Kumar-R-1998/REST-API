@@ -7,7 +7,7 @@ public class User {
 	private Integer id;
 	private String name;
 	private LocalDate birthDate;
-	
+
 	public User() {
 		super();
 	}
@@ -47,9 +47,5 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", birthDate=" + birthDate + "]";
 	}
-	
-	
-	
-	
-	
+
 }

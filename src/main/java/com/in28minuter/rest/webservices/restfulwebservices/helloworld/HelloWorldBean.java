@@ -1,11 +1,11 @@
 package com.in28minuter.rest.webservices.restfulwebservices.helloworld;
 
 public class HelloWorldBean {
-	
+
 	private String message;
 
 	public HelloWorldBean(String message) {
-		this.message=message;
+		this.message = message;
 	}
 
 	public String getMessage() {
@@ -20,11 +20,4 @@ public class HelloWorldBean {
 	public String toString() {
 		return "HelloWorldBean [message=" + message + "]";
 	}
-
-	
-
-	
-
-	
-	
 }
