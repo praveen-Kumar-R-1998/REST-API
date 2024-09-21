@@ -1,9 +1,12 @@
 package com.in28minuter.rest.webservices.restfulwebservices.user;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.net.URI;
 import java.util.List;
-
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,18 +31,27 @@ public class UserResource {
 	}
 
 	@GetMapping("/users")
-	public List<User> reteriveAllUser() {
+	public List<User> retrieveAllUser() {
 		return service.findAll();
 	}
+	
+	/**
+	 * Hear we are warping the user class and creating an entity model
+	 */
 
 	@GetMapping("/users/{id}")
-	public User reteriveSpecificUser(@PathVariable int id) {
+	public EntityModel<User> reteriveSpecificUser(@PathVariable int id) {
 		User user = service.findOne(id);
 
 		if (user == null) {
 			throw new UserNotFoundException("id: " + id);
 		}
-		return service.findOne(id);
+		EntityModel<User> entityModel = EntityModel.of(user);
+		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUser());
+		entityModel.add(link.withRel("all-users"));
+		
+//		return service.findOne(id);
+		return entityModel;
 
 	}
 
