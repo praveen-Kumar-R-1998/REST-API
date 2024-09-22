@@ -1,4 +1,5 @@
 package com.in28minuter.rest.webservices.restfulwebservices.user;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.net.URI;
@@ -28,7 +29,6 @@ public class UserJpaResource {
 
 //	Not using @Autowired annotation hear injecting the UserDaoService instance using constructor injection.
 
-	
 	private UserRepository repository;
 
 	public UserJpaResource(UserRepository repository) {
@@ -40,7 +40,7 @@ public class UserJpaResource {
 	public List<User> retrieveAllUser() {
 		return repository.findAll();
 	}
-	
+
 	/**
 	 * Hear we are warping the user class and creating an entity model
 	 */
@@ -55,7 +55,7 @@ public class UserJpaResource {
 		EntityModel<User> entityModel = EntityModel.of(user.get());
 		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUser());
 		entityModel.add(link.withRel("all-users"));
-		
+
 //		return service.findOne(id);
 		return entityModel;
 
@@ -81,4 +81,16 @@ public class UserJpaResource {
 		repository.deleteById(id);
 	}
 
+	@GetMapping("/jpa/users/{id}/posts")
+	public List<Post> retrievePostsForUser(@PathVariable int id) {
+		Optional<User> user = repository.findById(id);
+		System.out.println("User for which post has to be retrived is: "+user);
+		
+		if (user.isEmpty()) {
+			throw new UserNotFoundException("id: " + id);
+		}
+		System.out.println("posts are: "+user.get().getPosts());
+		return user.get().getPosts();
+
+	}
 }
